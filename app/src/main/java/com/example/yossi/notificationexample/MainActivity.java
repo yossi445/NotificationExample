@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        notification = new NotificationCompat.Builder(this);
-        notification.setAutoCancel(true); // ההתראה תיעלם בלחיצה
 
+        notification = new NotificationCompat.Builder(this);
+        notification.setAutoCancel(true);
 
 
         btnPush = findViewById(R.id.btnPush);
@@ -34,19 +34,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(v == btnPush)
         {
-            notification.setSmallIcon(R.drawable.ic_launcher_background);
-            notification.setTicker("ticker..."); //הטקסט שיופיע בשורה העליונה כשההתראה תיכנס
-            notification.setWhen( System.currentTimeMillis());//מתי תופיע ההתראה - עכשיו, בזמן לחיצה
-            notification.setContentTitle("content title");
-            notification.setContentText("the body of the notification");
 
-            Intent intent = new Intent(this,MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+                notification.setSmallIcon(R.drawable.ic_launcher_background);
+                notification.setTicker("this is the ticker...");
+                notification.setWhen(System.currentTimeMillis());
+                notification.setContentTitle("Title");
+                notification.setContentText("bla bla bla.....");
 
-            notification.setContentIntent(pendingIntent);
+                Intent intent = new Intent(this,Main2Activity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+                notification.setContentIntent(pendingIntent);
 
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.notify(111, notification.build());
+                NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.notify(1, notification.build());
 
 
 
