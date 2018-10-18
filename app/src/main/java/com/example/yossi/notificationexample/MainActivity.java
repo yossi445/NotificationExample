@@ -12,8 +12,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnPush;
-    NotificationCompat.Builder notification;
+    Button btnPush,btnCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +20,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
 
-        notification = new NotificationCompat.Builder(this);
-        notification.setAutoCancel(true);
-
-
         btnPush = findViewById(R.id.btnPush);
         btnPush.setOnClickListener(this);
+
+        btnCancel = findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(this);
     }
 
     @Override
@@ -35,20 +33,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v == btnPush)
         {
 
-                notification.setSmallIcon(R.drawable.ic_launcher_background);
-                notification.setTicker("this is the ticker...");
-                notification.setWhen(System.currentTimeMillis());
-                notification.setContentTitle("Title");
-                notification.setContentText("bla bla bla.....");
+            //phase 1 - create intent & pendindIntent
+            Intent intent = new Intent(this,Main2Activity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
 
-                Intent intent = new Intent(this,Main2Activity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
-                notification.setContentIntent(pendingIntent);
 
+            //phase 2 - builder
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+            builder.setAutoCancel(true);
+
+
+            //phase 3 - Notification
+            Notification notification = builder.setContentIntent(pendingIntent).
+                    setSmallIcon(R.drawable.ic_launcher_background). // must
+                    setTicker("this is the ticker...").
+                    setContentTitle("title"). //must
+                    setContentText("bla bla...").
+                    setWhen(System.currentTimeMillis()).
+                    build();
+
+
+                //phase 4  - NotificationManager
                 NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-                notificationManager.notify(1, notification.build());
+                notificationManager.notify(1, notification);
 
-
+        }
+        else if(v==btnCancel)
+        {
+            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.cancel(1);
 
         }
 
